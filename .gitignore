@@ -1,3 +1,6 @@
 .venv/
 .DS_Store
 .ipynb_checkpoints/
+
+#big files
+Exercise-2b/fasttext_model.model.wv.vectors_ngrams.npy
