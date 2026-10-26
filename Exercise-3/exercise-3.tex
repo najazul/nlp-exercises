@@ -1,0 +1,95 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{verbatim}
+
+% Literal <s> token macro (T1 fontenc makes < > render literally)
+\newcommand{\sTok}{\texttt{<s>}}
+
+\begin{document}
+
+\section*{Exercise 3 --- Unigram, Bigram, Trigram Counts}
+
+Sentences with \sTok{} as the single boundary marker (start \emph{and} end of every sentence, no \texttt{</s>}):
+\begin{verbatim}
+<s> i like natural language <s>
+<s> i like machine learning <s>
+<s> you like natural language <s>
+<s> you study machine learning <s>
+<s> we study natural language processing <s>
+\end{verbatim}
+
+\subsection*{Unigram counts --- $C(w)$}
+Total tokens $= 31$.
+\begin{table}[h]
+\centering
+\begin{tabular}{ccccccccccc}
+\toprule
+\sTok & i & like & natural & language & machine & learning & you & study & we & processing \\
+\midrule
+10 & 2 & 3 & 3 & 3 & 2 & 2 & 2 & 2 & 1 & 1 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Bigram matrix --- $C(w_{-1}, w)$}
+Total bigrams $= 26$.
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccccccccc}
+\toprule
+$w_{-1} \backslash w$ & \sTok & i & like & natural & language & machine & learning & you & study & we & processing & Row total \\
+\midrule
+\sTok & 0 & 2 & 0 & 0 & 0 & 0 & 0 & 2 & 0 & 1 & 0 & \textbf{5} \\
+i & 0 & 0 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{2} \\
+like & 0 & 0 & 0 & 2 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \textbf{3} \\
+natural & 0 & 0 & 0 & 0 & 3 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{3} \\
+language & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \textbf{3} \\
+machine & 0 & 0 & 0 & 0 & 0 & 0 & 2 & 0 & 0 & 0 & 0 & \textbf{2} \\
+learning & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{2} \\
+you & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & \textbf{2} \\
+study & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \textbf{2} \\
+we & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & \textbf{1} \\
+processing & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Trigram matrix --- $C(w_{-2}, w_{-1}, w)$}
+Total trigrams $= 21$.
+\begin{table}[h]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lcccccccccccc}
+\toprule
+Context $(w_{-2}\,w_{-1})$ & \sTok & i & like & natural & language & machine & learning & you & study & we & processing & Row total \\
+\midrule
+\sTok\ i & 0 & 0 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{2} \\
+\sTok\ you & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & \textbf{2} \\
+\sTok\ we & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & \textbf{1} \\
+i like & 0 & 0 & 0 & 1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \textbf{2} \\
+you like & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} \\
+you study & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & \textbf{1} \\
+we study & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} \\
+like natural & 0 & 0 & 0 & 0 & 2 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{2} \\
+like machine & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & \textbf{1} \\
+natural language & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & \textbf{3} \\
+machine learning & 2 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{2} \\
+study machine & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & \textbf{1} \\
+study natural & 0 & 0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} \\
+language processing & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{1} \\
+language \sTok & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{0} \\
+learning \sTok & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{0} \\
+processing \sTok & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & \textbf{0} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Note: contexts ending in sentence-final \sTok{} (language \sTok, learning \sTok, processing \sTok) are listed for completeness as word boundaries. Their row total is $0$ because nothing follows the end marker inside a sentence. The end marker itself \emph{is} counted: $C(\sTok)=10$ (5 starts $+$ 5 ends), bigram column \sTok{} $=5$, trigram column \sTok{} $=5$.
+
+\end{document}
